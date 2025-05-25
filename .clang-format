@@ -1,0 +1,5 @@
+# Use this as .clang-format
+BasedOnStyle: LLVM    # or Google, WebKit, etc.
+IndentWidth:   8      # 8 spaces per indent level
+TabWidth:      8      # a “tab” is treated as 8 spaces
+UseTab:        Never  # always use spaces, never literal ‘\t’
