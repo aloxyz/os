@@ -1,5 +1,5 @@
 # OS
-Barebones OS built for learning purposes
+Barebones i386 OS built for learning purposes
 
 ## Instructions
 - Build with `make`
