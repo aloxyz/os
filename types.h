@@ -7,3 +7,4 @@ typedef struct {
     int y;
 } cursor;
 
+void curnl(cursor *cur, int by);

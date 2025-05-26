@@ -5,20 +5,20 @@
 int buffer_pos;
 
 void shell(cursor *cur) {
-        const char *prefix = "> ";
+        char buf[MAX_INPUT]; 
+        
+        // int by = cur->y;
 
-        for (int i = 0; prefix[i]; i++) {
-                prtc(cur, prefix[i], COL_DEFAULT);
-        }
-}
+        int bx = cur->x;
 
-void bufrw(cursor *cur) {
-        char buf[MAX_INPUT];
+        while(1) {
                 prts(cur, "> ", COL_DEFAULT);
-
-        while (1) {
-                kbdread(cur, buf);
-                prts(cur, buf, COL_FG_RED);
+                scans(buf, cur);
+                cur->y++;
+                cur->x = bx;
+                prts(cur, buf, COL_FG_BLUE);
+                cur->x = bx;
+                cur->y++;
         }
 }
 
@@ -29,9 +29,9 @@ void _start() {
         cursor cur = { .x =25 , .y = 5 };
         prts(&cur, "ALOS - Alo Operating System", COL_FG_BLUE);
 
-
         cur.x = 5;
         cur.y = 10;
-        bufrw(&cur);
-
+        shell(&cur);
+        
+        while(1);
 }

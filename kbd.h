@@ -14,4 +14,8 @@ int kbd_has_data();
 
 static inline unsigned char inb(unsigned short port);
 
+char readc();
+
+void scans(char *buf, cursor *cur);
+
 void kbdread(cursor *cur, char *buf);

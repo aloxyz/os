@@ -1,10 +1,10 @@
 #include "kbd.h"
 #include "types.h"
+#include "video.h"
 
-unsigned char read_sc() {
-        // Read scancode from keyboard
+unsigned char getsc() {
+        // Get scancode from keyboard
         while (!kbd_has_data());
-
         return inb(KBD_SCAN_PORT);
 }
 
@@ -36,44 +36,25 @@ static inline unsigned char inb(unsigned short port) {
         return ret;
 }
 
-/*void kbdread (cursor *cur) {*/
-/*        unsigned char sc = read_sc();*/
-/**/
-/*        if (sc & KBD_BREAK_CODE) {*/
-/*                return;*/
-/*        }*/
-/**/
-/*        char c = sc2char(sc);*/
-/*        if (c != 0) {*/
-/*                if (c == '\b') {*/
-/*                        //buf[pos--] = ' ';*/
-/*                        cur->x--;*/
-/*                        print_xy(cur->x, cur->y, ' ', COL_DEFAULT);*/
-/*                }*/
-/*                else {*/
-/*                        cur->x++;*/
-/*                        print_xy(cur->x, cur->y, c, COL_FG_RED);*/
-/*                        //buf[pos++] = c;*/
-/*                }*/
-/*        }*/
-/*}*/
+char readc() {
+        // Return keyboard char input
+        unsigned char sc = getsc();
 
-void kbdread (cursor *cur, char *buf) {
-        unsigned char sc = read_sc();
+        if (sc & KBD_BREAK_CODE) return 0;
+        return sc2char(sc);       
+}
 
-        if (sc & KBD_BREAK_CODE) {
-                return;
-        }
+void scans(char *buf, cursor *cur) {
+        // Scan input onto buf until c is newline
+        char c = 0;
 
-        char c = sc2char(sc);
-        if (c != 0) {
-                if (c == '\b') {
-                        buf[cur->x] = ' ';
-                        cur->x--;
-                }
-                else {
+        while((c = readc()) != '\n') {
+                if(c != 0) {
+                        *buf++ = c;
+                        prtc(cur, c, COL_FG_RED);
                         cur->x++;
-                        buf[cur->x] = c;
                 }
+
         }
+        *buf = '\0';
 }
