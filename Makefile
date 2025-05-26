@@ -1,3 +1,5 @@
+OBJS = kernel.o video.o kbd.o types.o
+
 all: os
 
 boot.bin: boot.asm
@@ -6,8 +8,17 @@ boot.bin: boot.asm
 kernel.o: kernel.c
 	gcc -m32 -ffreestanding -c kernel.c -o kernel.o
 
-kernel.elf: kernel.o
-	ld -m elf_i386 -T linker.ld -o kernel.elf kernel.o
+video.o: video.c
+	gcc -m32 -ffreestanding -c video.c -o video.o
+
+kbd.o: kbd.c
+	gcc -m32 -ffreestanding -c kbd.c -o kbd.o
+
+types.o: types.c
+	gcc -m32 -ffreestanding -c types.c -o types.o
+
+kernel.elf: $(OBJS)
+	ld -m elf_i386 -T linker.ld -o kernel.elf $(OBJS)
 
 kernel.bin: kernel.elf
 	objcopy -O binary kernel.elf kernel.bin
