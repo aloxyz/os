@@ -1,5 +1,17 @@
 #include "video.h"
 
+static inline void outb(unsigned short port, unsigned char val) {
+    __asm__ volatile ("outb %0, %1" : : "a"(val), "Nd"(port));
+}
+
+void vga_cur_off() {
+    // Disable cursor by setting bit 5 (0x20) in Cursor Start/End regs
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, 0x20);
+    outb(0x3D4, 0x0B);
+    outb(0x3D5, 0x20);
+}
+
 void cls(int x, int y) {
         char *video = VIDEO_RAM;
 

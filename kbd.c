@@ -46,15 +46,26 @@ char readc() {
 
 void scans(char *buf, cursor *cur) {
         // Scan input onto buf until c is newline
-        char c = 0;
+        char c;
+        char *start = buf;
 
-        while((c = readc()) != '\n') {
-                if(c != 0) {
-                        *buf++ = c;
-                        prtc(cur, c, COL_FG_RED);
-                        cur->x++;
+        while(1) {
+                c = readc();
+                if (c == 0) continue; // Ignore breakcodes
+                if (c == '\n') break; // End
+
+                if (c == '\b') {
+                        if (buf > start) {
+                                buf--;
+                                cur->x--;
+                                prtc(cur, ' ', COL_FG_RED);
+                        }
                 }
-
+                else {
+                        *buf++ = c;
+                        cur->x++;
+                        prtc(cur, c, COL_FG_RED);
+                }
         }
         *buf = '\0';
 }

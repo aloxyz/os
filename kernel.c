@@ -25,6 +25,7 @@ void shell(cursor *cur) {
 __attribute__((section(".start")))
 void _start() {
         cls(80, 25);
+        vga_cur_off();
 
         cursor cur = { .x =25 , .y = 5 };
         prts(&cur, "ALOS - Alo Operating System", COL_FG_BLUE);

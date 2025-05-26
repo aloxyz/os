@@ -10,6 +10,10 @@
 #define COL_FG_RED 0x04
 #define COL_FG_BLUE 0x31
 
+static inline void outb(unsigned short port, unsigned char val);
+
+void vga_cur_off();
+
 void cls(int x, int y);
 
 void prts(cursor *cur, const char *str, int color);
